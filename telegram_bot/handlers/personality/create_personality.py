@@ -43,7 +43,7 @@ async def process_description(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
 
     await db.add_personality(user_id, name, description)
-    await update.message.reply_text(f"The personality is created:\nИмя: {name}\nDescription: {description}")
+    await update.message.reply_text(f"The personality is created:\n\nName: {name}\nDescription: {description}")
 
     context.user_data.clear()
 
