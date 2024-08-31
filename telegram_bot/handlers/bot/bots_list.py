@@ -12,7 +12,7 @@ async def list_bots(update: Update, context: CallbackContext):
     bots = await db.get_personalities(user_id)
 
     if not bots:
-        await update.message.reply_text("У вас нет созданных ботов.")
+        await update.message.reply_text("You don't have any bots created.")
         return
 
     keyboard = [
@@ -22,26 +22,22 @@ async def list_bots(update: Update, context: CallbackContext):
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await update.message.reply_text("Выберите бота для управления:", reply_markup=reply_markup)
+    await update.message.reply_text("Select a bot to manage:", reply_markup=reply_markup)
 
 
 async def button_handler(update: Update, context: CallbackContext):
     query = update.callback_query
     name = query.data.split('_', 2)[2]
-    user_id = update.effective_user.id
-
-    personalities = await db.get_personalities(user_id)
-    data = next(desc for desc in personalities)
 
     keyboard = [
-        [InlineKeyboardButton("Начать чат", callback_data=f"chat_start_{name}")],
-        [InlineKeyboardButton("Изменить", callback_data=f"edit_bot_{name}")],
-        [InlineKeyboardButton("Удалить", callback_data=f"delete_bot_{name}")]
+        [InlineKeyboardButton("Start chat", callback_data=f"chat_start_{name}")],
+        [InlineKeyboardButton("Change", callback_data=f"edit_bot_{name}")],
+        [InlineKeyboardButton("Delete", callback_data=f"delete_bot_{name}")]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await query.message.reply_text(f"Имя: {name}", reply_markup=reply_markup)
+    await query.message.reply_text(f"Name: {name}", reply_markup=reply_markup)
 
 
 def register_bots_list_handler(application):

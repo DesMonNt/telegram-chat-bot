@@ -4,7 +4,7 @@ from telegram.ext import ContextTypes, CallbackQueryHandler, MessageHandler, fil
 from chat_bot import Personality, Chat
 from telegram_bot.databases import PersonalityDB, BotDB
 
-cancel_button = KeyboardButton("Прекратить чат")
+cancel_button = KeyboardButton("Stop chat")
 cancel_keyboard = ReplyKeyboardMarkup([[cancel_button]], resize_keyboard=True)
 
 personality_db = PersonalityDB()
@@ -34,7 +34,7 @@ async def start_chat(update: Update, context: CallbackContext):
     bot_personality_entry = next((entry for entry in bot_personalities if entry[1] == bot_name), None)
 
     if bot_personality_entry is None:
-        await update.callback_query.message.reply_text("Информация о выбранном боте не найдена.")
+        await update.callback_query.message.reply_text("Information about the selected bot was not found.")
         return ConversationHandler.END
 
     bot_id = bot_personality_entry[0]
@@ -54,13 +54,13 @@ async def start_chat(update: Update, context: CallbackContext):
 
 async def handle_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if 'chat' not in context.chat_data:
-        await update.message.reply_text("Чат не был начат. Пожалуйста, используйте команду /start для начала.")
+        await update.message.reply_text("The chat has not been started.")
         return ConversationHandler.END
 
     chat = context.chat_data['chat']
     user_message = update.message.text
 
-    if user_message.lower() == "прекратить чат":
+    if user_message.lower() == "Stop chat":
         return await end_chat(update, context)
 
     bot_response = await chat.chat(user_message)
@@ -69,11 +69,11 @@ async def handle_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 async def end_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if 'chat' not in context.chat_data:
-        await update.message.reply_text("Чат не был начат.")
+        await update.message.reply_text("The chat has not been started.")
         return ConversationHandler.END
 
     context.chat_data.clear()
-    await update.message.reply_text("Чат завершен.", reply_markup=ReplyKeyboardRemove())
+    await update.message.reply_text("The chat is over.", reply_markup=ReplyKeyboardRemove())
 
     return ConversationHandler.END
 

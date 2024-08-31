@@ -18,10 +18,10 @@ async def edit_personality(update: Update, context: CallbackContext):
     personalities = await db.get_personalities(user_id)
 
     if not any(n == name for n, _ in personalities):
-        await query.message.reply_text("Вы не можете редактировать эту личность.")
+        await query.message.reply_text("You cannot edit this personality.")
         return
 
-    await query.message.reply_text(f"Введите новое описание для личности '{name}':")
+    await query.message.reply_text(f"Enter a new description for the personality '{name}':")
     context.user_data['edit_personality'] = {'name': name, 'user_id': user_id}
 
     return WAITING_FOR_EDIT_DESCRIPTION
@@ -36,7 +36,7 @@ async def handle_edit_description(update: Update, context: CallbackContext):
     user_id = context.user_data['edit_personality']['user_id']
 
     await db.update_personality(user_id, name, new_description)
-    await update.message.reply_text(f"Описание для личности '{name}' обновлено.")
+    await update.message.reply_text(f"Description for the personality '{name}' updated.")
 
     del context.user_data['edit_personality']
 
@@ -44,7 +44,7 @@ async def handle_edit_description(update: Update, context: CallbackContext):
 
 
 async def cancel_edit(update: Update, context: CallbackContext):
-    await update.message.reply_text("Редактирование личности отменено.", reply_markup=ReplyKeyboardRemove())
+    await update.message.reply_text("Personality editing has been canceled.", reply_markup=ReplyKeyboardRemove())
     context.user_data.clear()
 
     return ConversationHandler.END
@@ -56,9 +56,9 @@ def register_edit_personality(application):
         states={
             WAITING_FOR_EDIT_DESCRIPTION: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, handle_edit_description),
-                MessageHandler(filters.Regex('^Отмена$'), cancel_edit)
+                MessageHandler(filters.Regex('^Cancel$'), cancel_edit)
             ]
         },
-        fallbacks=[MessageHandler(filters.Regex('^Отмена$'), cancel_edit)]
+        fallbacks=[MessageHandler(filters.Regex('^Cancel$'), cancel_edit)]
     )
     application.add_handler(edit_personality_handler)

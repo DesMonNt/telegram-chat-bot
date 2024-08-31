@@ -28,7 +28,7 @@ async def edit_bot(update: Update, context: CallbackContext):
             break
 
     if bot_id is None:
-        await query.message.reply_text("Вы не можете редактировать этого бота.")
+        await query.message.reply_text("You cannot edit this bot.")
         return
 
     context.user_data['edit_bot'] = {'name': bot_name, 'bot_id': bot_id}
@@ -36,12 +36,12 @@ async def edit_bot(update: Update, context: CallbackContext):
 
     if bot_info:
         await query.message.reply_text(
-            f"Введите новый сценарий для бота '{bot_name}':",
+            f"Enter a new script for the bot '{bot_name}':",
             reply_markup=cancel_keyboard
         )
         return WAITING_FOR_EDIT_SCENARIO
     else:
-        await query.message.reply_text("Информация о боте не найдена.")
+        await query.message.reply_text("Information about the bot was not found.")
         return ConversationHandler.END
 
 
@@ -55,7 +55,7 @@ async def process_edit_scenario(update: Update, context: CallbackContext):
     await bot_db.update_bot_scenario(bot_id, new_scenario)
 
     await update.message.reply_text(
-        "Теперь введите начальное сообщение для бота.",
+        "Now enter the initial message for the bot.",
         reply_markup=cancel_keyboard
     )
 
@@ -71,7 +71,7 @@ async def process_edit_initial_message(update: Update, context: CallbackContext)
 
     await bot_db.update_bot_initial_message(bot_id, initial_message)
 
-    await update.message.reply_text(f"Начальное сообщение для бота обновлено.")
+    await update.message.reply_text(f"The initial message for the bot has been updated.")
 
     context.user_data.clear()
 
@@ -79,7 +79,7 @@ async def process_edit_initial_message(update: Update, context: CallbackContext)
 
 
 async def cancel_edit(update: Update, context: CallbackContext):
-    await update.message.reply_text("Редактирование бота отменено.", reply_markup=ReplyKeyboardRemove())
+    await update.message.reply_text("Bot editing has been canceled.", reply_markup=ReplyKeyboardRemove())
     context.user_data.clear()
 
     return ConversationHandler.END
@@ -90,14 +90,14 @@ def register_edit_bot_handler(application):
         entry_points=[CallbackQueryHandler(edit_bot, pattern="^edit_bot_")],
         states={
             WAITING_FOR_EDIT_SCENARIO: [
-                MessageHandler(filters.Regex('^Отмена$'), cancel_edit),
+                MessageHandler(filters.Regex('^Cancel$'), cancel_edit),
                 MessageHandler(filters.TEXT & ~filters.COMMAND, process_edit_scenario),
             ],
             WAITING_FOR_EDIT_INITIAL_MESSAGE: [
-                MessageHandler(filters.Regex('^Отмена$'), cancel_edit),
+                MessageHandler(filters.Regex('^Cancel$'), cancel_edit),
                 MessageHandler(filters.TEXT & ~filters.COMMAND, process_edit_initial_message),
             ],
         },
-        fallbacks=[MessageHandler(filters.Regex('^Отмена$'), cancel_edit)]
+        fallbacks=[MessageHandler(filters.Regex('^Cancel$'), cancel_edit)]
     )
     application.add_handler(edit_bot_handler)

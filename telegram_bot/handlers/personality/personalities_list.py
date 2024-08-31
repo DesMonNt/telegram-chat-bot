@@ -12,7 +12,7 @@ async def list_personalities(update: Update, context: CallbackContext):
     personalities = await db.get_personalities(user_id)
 
     if not personalities:
-        await update.message.reply_text("Нет сохраненных личностей.")
+        await update.message.reply_text("There are no saved identities.")
         return
 
     keyboard = [
@@ -22,7 +22,7 @@ async def list_personalities(update: Update, context: CallbackContext):
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await update.message.reply_text("Выберите личность:", reply_markup=reply_markup)
+    await update.message.reply_text("Choose a personality:", reply_markup=reply_markup)
 
 
 async def button_handler(update: Update, context: CallbackContext):
@@ -31,17 +31,17 @@ async def button_handler(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
 
     personalities = await db.get_personalities(user_id)
-    description = next((desc for n, desc in personalities if n == name), "Описание не найдено")
+    description = next((desc for n, desc in personalities if n == name), "Description not found")
 
     keyboard = [
-        [InlineKeyboardButton("Выбрать активной", callback_data=f"set_active_personality_{name}")],
-        [InlineKeyboardButton("Изменить", callback_data=f"edit_personality_{name}")],
-        [InlineKeyboardButton("Удалить", callback_data=f"delete_personality_{name}")]
+        [InlineKeyboardButton("Select Active", callback_data=f"set_active_personality_{name}")],
+        [InlineKeyboardButton("Change", callback_data=f"edit_personality_{name}")],
+        [InlineKeyboardButton("Delete", callback_data=f"delete_personality_{name}")]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await query.message.reply_text(f"Имя: {name}\nОписание: {description}", reply_markup=reply_markup)
+    await query.message.reply_text(f"Name: {name}\nDescription: {description}", reply_markup=reply_markup)
 
 
 def register_personalities_list_handler(application):

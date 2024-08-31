@@ -11,7 +11,7 @@ async def set_active_personality(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
 
     await db.set_active_personality(user_id, name)
-    await query.message.reply_text(f"Активная личность изменена на '{name}'.")
+    await query.message.reply_text(f"The active personality has been changed to '{name}'.")
 
 
 def register_set_active_personality_handler(application):

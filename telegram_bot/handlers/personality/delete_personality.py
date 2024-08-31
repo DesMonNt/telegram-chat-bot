@@ -15,14 +15,14 @@ async def delete_personality(update: Update, context: CallbackContext):
     personalities = await db.get_personalities(user_id)
 
     if not any(n == name for n, _ in personalities):
-        await query.message.reply_text("Вы не можете удалить эту личность.")
+        await query.message.reply_text("You cannot delete this personality.")
         return
 
-    keyboard = [[InlineKeyboardButton("Да", callback_data=f"confirm_delete_personality_{name}")],
-                [InlineKeyboardButton("Нет", callback_data=f"cancel_delete_personality_{name}")]]
+    keyboard = [[InlineKeyboardButton("Yes", callback_data=f"confirm_delete_personality_{name}")],
+                [InlineKeyboardButton("No", callback_data=f"cancel_delete_personality_{name}")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await query.message.reply_text(f"Вы уверены, что хотите удалить личность '{name}'?", reply_markup=reply_markup)
+    await query.message.reply_text(f"Are you sure you want to delete the personality '{name}'?", reply_markup=reply_markup)
 
 
 async def confirm_delete(update: Update, context: CallbackContext):
@@ -31,12 +31,12 @@ async def confirm_delete(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
 
     await db.delete_personality(user_id, name)
-    await query.message.reply_text(f"Личность '{name}' была удалена.")
+    await query.message.reply_text(f"Personality '{name}' it was deleted.")
 
 
 async def cancel_delete(update: Update, context: CallbackContext):
     query = update.callback_query
-    await query.message.reply_text("Удаление личности отменено.")
+    await query.message.reply_text("The deletion of the personality has been canceled.")
 
 
 def register_delete_personality(application):
