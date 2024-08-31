@@ -70,6 +70,6 @@ def register_create_personality_handler(application):
                 MessageHandler(filters.TEXT, process_description)
             ],
         },
-        fallbacks=[MessageHandler(filters.Regex('^Отмена$'), cancel_creation)]
+        fallbacks=[MessageHandler(filters.Regex('^Отмена$'), cancel_creation)],
     )
     application.add_handler(create_personality_handler)

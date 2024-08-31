@@ -1,8 +1,5 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
-from .edit_personality import edit_personality
-from .delete_personality import delete_personality, confirm_delete, cancel_delete
-from .set_active_personality import set_active_personality
 from telegram_bot.databases import PersonalityDB
 
 db = PersonalityDB()
@@ -19,7 +16,7 @@ async def list_personalities(update: Update, context: CallbackContext):
         return
 
     keyboard = [
-        [InlineKeyboardButton(name, callback_data=name)]
+        [InlineKeyboardButton(name, callback_data=f'manage_personality_{name}')]
         for name, _ in personalities
     ]
 
@@ -30,32 +27,16 @@ async def list_personalities(update: Update, context: CallbackContext):
 
 async def button_handler(update: Update, context: CallbackContext):
     query = update.callback_query
-    name = query.data
+    name = query.data.split('_', 2)[2]
     user_id = update.effective_user.id
-
-    if name.startswith("edit_"):
-        await edit_personality(update, context)
-        return
-    elif name.startswith("delete_"):
-        await delete_personality(update, context)
-        return
-    elif name.startswith("confirm_delete_"):
-        await confirm_delete(update, context)
-        return
-    elif name.startswith("cancel_delete_"):
-        await cancel_delete(update, context)
-        return
-    elif name.startswith("set_active_"):
-        await set_active_personality(update, context)
-        return
 
     personalities = await db.get_personalities(user_id)
     description = next((desc for n, desc in personalities if n == name), "Описание не найдено")
 
     keyboard = [
-        [InlineKeyboardButton("Выбрать активной", callback_data=f"set_active_{name}")],
-        [InlineKeyboardButton("Изменить", callback_data=f"edit_{name}")],
-        [InlineKeyboardButton("Удалить", callback_data=f"delete_{name}")]
+        [InlineKeyboardButton("Выбрать активной", callback_data=f"set_active_personality_{name}")],
+        [InlineKeyboardButton("Изменить", callback_data=f"edit_personality_{name}")],
+        [InlineKeyboardButton("Удалить", callback_data=f"delete_personality_{name}")]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -65,4 +46,4 @@ async def button_handler(update: Update, context: CallbackContext):
 
 def register_personalities_list_handler(application):
     application.add_handler(CommandHandler("manage_personas", list_personalities))
-    application.add_handler(CallbackQueryHandler(button_handler))
+    application.add_handler(CallbackQueryHandler(button_handler, pattern="^manage_personality_"))
