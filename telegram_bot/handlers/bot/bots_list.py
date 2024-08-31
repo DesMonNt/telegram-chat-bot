@@ -34,14 +34,14 @@ async def button_handler(update: Update, context: CallbackContext):
     data = next(desc for desc in personalities)
 
     keyboard = [
-        [InlineKeyboardButton("Начать чат", callback_data=f"сhat_start_{name}")],
+        [InlineKeyboardButton("Начать чат", callback_data=f"chat_start_{name}")],
         [InlineKeyboardButton("Изменить", callback_data=f"edit_bot_{name}")],
         [InlineKeyboardButton("Удалить", callback_data=f"delete_bot_{name}")]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await query.message.reply_text(f"Имя: {name}\nОписание: {data[2]}", reply_markup=reply_markup)
+    await query.message.reply_text(f"Имя: {name}", reply_markup=reply_markup)
 
 
 def register_bots_list_handler(application):

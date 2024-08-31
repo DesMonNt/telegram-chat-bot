@@ -125,3 +125,33 @@ class BotDB:
                 await db.commit()
             except aiosqlite.Error:
                 await db.rollback()
+
+    async def get_description(self, user_id: int, name: str):
+        async with aiosqlite.connect(self.db_path) as db:
+            async with db.execute('''
+                SELECT description
+                FROM personalities
+                WHERE creator_id = ? AND name = ?
+            ''', (user_id, name)) as cursor:
+                result = await cursor.fetchone()
+                return result[0]
+
+    async def get_bot_scenario(self, personality_id: int):
+        async with aiosqlite.connect(self.db_path) as db:
+            async with db.execute('''
+                SELECT scenario
+                FROM bot_info
+                WHERE personality_id = ?
+            ''', (personality_id,)) as cursor:
+                result = await cursor.fetchone()
+                return result[0]
+
+    async def get_bot_initial_message(self, personality_id: int):
+        async with aiosqlite.connect(self.db_path) as db:
+            async with db.execute('''
+                SELECT initial_message
+                FROM bot_info
+                WHERE personality_id = ?
+            ''', (personality_id,)) as cursor:
+                result = await cursor.fetchone()
+                return result[0]

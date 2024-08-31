@@ -82,3 +82,14 @@ class PersonalityDB:
             async with db.execute('SELECT active_personality FROM user_settings WHERE user_id = ?', (user_id,)) as cursor:
                 result = await cursor.fetchone()
                 return result[0] if result else None
+
+    async def get_description(self, user_id: int, name: str):
+        async with aiosqlite.connect(self.db_path) as db:
+            async with db.execute('''
+                SELECT name, description
+                FROM personalities
+                WHERE user_id = ? AND name = ?
+            ''', (user_id, name)) as cursor:
+                result = await cursor.fetchone()
+                return result
+

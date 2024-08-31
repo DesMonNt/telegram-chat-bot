@@ -9,6 +9,7 @@ from telegram_bot.handlers.bot.bots_list import register_bots_list_handler
 from telegram_bot.handlers.bot.create_bot import register_create_bot_handler
 from telegram_bot.handlers.bot.delete_bot import register_delete_bot_handler
 from telegram_bot.handlers.bot.edit_bot import register_edit_bot_handler
+from telegram_bot.handlers.chat.start_chat import register_chat_handlers
 
 __all__ = [
     'register_handlers',
@@ -27,3 +28,4 @@ def register_handlers(app):
     register_bots_list_handler(app)
     register_delete_bot_handler(app)
     register_edit_bot_handler(app)
+    register_chat_handlers(app)
