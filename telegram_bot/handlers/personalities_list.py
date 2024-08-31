@@ -63,6 +63,6 @@ async def button_handler(update: Update, context: CallbackContext):
     await query.message.reply_text(f"Имя: {name}\nОписание: {description}", reply_markup=reply_markup)
 
 
-def register_personalities_list(application):
+def register_personalities_list_handler(application):
     application.add_handler(CommandHandler("manage_personas", list_personalities))
     application.add_handler(CallbackQueryHandler(button_handler))

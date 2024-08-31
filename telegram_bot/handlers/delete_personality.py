@@ -19,7 +19,7 @@ async def delete_personality(update: Update, context: CallbackContext):
         return
 
     keyboard = [[InlineKeyboardButton("Да", callback_data=f"confirm_delete_{name}")],
-                [InlineKeyboardButton("Нет", callback_data="cancel_delete")]]
+                [InlineKeyboardButton("Нет", callback_data=f"cancel_delete_{name}")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await query.message.reply_text(f"Вы уверены, что хотите удалить личность '{name}'?", reply_markup=reply_markup)

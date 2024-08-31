@@ -22,6 +22,13 @@ async def start_create_personality(update: Update, context: CallbackContext):
 async def process_name(update: Update, context: CallbackContext):
     context.user_data['name'] = update.message.text
 
+    user_id = update.effective_user.id
+    existing_personalities = await db.get_personalities(user_id)
+
+    if any(name == context.user_data['name'] for name, _ in existing_personalities):
+        await update.message.reply_text("Личность с таким именем уже существует. Пожалуйста, выберите другое имя.")
+        return WAITING_FOR_NAME
+
     await update.message.reply_text(
         "Теперь напишите описание личности.",
         reply_markup=cancel_keyboard
@@ -50,7 +57,7 @@ async def cancel_creation(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
-def register_create_personality_handlers(application):
+def register_create_personality_handler(application):
     create_personality_handler = ConversationHandler(
         entry_points=[CommandHandler("create_persona", start_create_personality)],
         states={
