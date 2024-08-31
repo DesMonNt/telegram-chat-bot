@@ -12,7 +12,7 @@ async def list_personalities(update: Update, context: CallbackContext):
     personalities = await db.get_personalities(user_id)
 
     if not personalities:
-        await update.message.reply_text("There are no saved identities.")
+        await update.message.reply_text("There are no saved personalities.")
         return
 
     keyboard = [
