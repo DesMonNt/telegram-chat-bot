@@ -18,10 +18,11 @@ async def edit_bot(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
 
     bots = await bot_db.get_personalities(user_id)
+    print(bots)
 
     bot_id = None
 
-    for name, id in bots:
+    for id, _, name in bots:
         if name == bot_name:
             bot_id = id
             break
@@ -51,9 +52,7 @@ async def process_edit_scenario(update: Update, context: CallbackContext):
     bot_id = context.user_data['edit_bot']['bot_id']
     new_scenario = update.message.text
 
-    await bot_db.update_bot_info(bot_id, scenario=new_scenario, initial_message=None)
-
-    await update.message.reply_text(f"Сценарий для бота обновлен.")
+    await bot_db.update_bot_scenario(bot_id, new_scenario)
 
     await update.message.reply_text(
         "Теперь введите начальное сообщение для бота.",
@@ -70,7 +69,7 @@ async def process_edit_initial_message(update: Update, context: CallbackContext)
     bot_id = context.user_data['edit_bot']['bot_id']
     initial_message = update.message.text
 
-    await bot_db.update_bot_info(bot_id, scenario=None, initial_message=initial_message)
+    await bot_db.update_bot_initial_message(bot_id, initial_message)
 
     await update.message.reply_text(f"Начальное сообщение для бота обновлено.")
 

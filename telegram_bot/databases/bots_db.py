@@ -91,14 +91,26 @@ class BotDB:
             ''', (personality_id,)) as cursor:
                 return await cursor.fetchone()
 
-    async def update_bot_info(self, personality_id: int, scenario: str, initial_message: str):
+    async def update_bot_scenario(self, personality_id: int, scenario: str):
         async with aiosqlite.connect(self.db_path) as db:
             try:
                 await db.execute('''
                     UPDATE bot_info
-                    SET scenario = ?, initial_message = ?
+                    SET scenario = ?
                     WHERE personality_id = ?
-                ''', (scenario, initial_message, personality_id))
+                ''', (scenario, personality_id))
+                await db.commit()
+            except aiosqlite.Error:
+                await db.rollback()
+
+    async def update_bot_initial_message(self, personality_id: int, initial_message: str):
+        async with aiosqlite.connect(self.db_path) as db:
+            try:
+                await db.execute('''
+                    UPDATE bot_info
+                    SET initial_message = ?
+                    WHERE personality_id = ?
+                ''', (initial_message, personality_id))
                 await db.commit()
             except aiosqlite.Error:
                 await db.rollback()
