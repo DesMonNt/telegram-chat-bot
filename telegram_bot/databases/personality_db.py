@@ -18,6 +18,12 @@ class PersonalityDB:
                     UNIQUE(user_id, name)
                 )
             ''')
+            await db.execute('''
+                CREATE TABLE IF NOT EXISTS user_settings (
+                    user_id INTEGER PRIMARY KEY,
+                    active_personality TEXT
+                )
+            ''')
             await db.commit()
 
     async def add_personality(self, user_id: int, name: str, description: str):
@@ -45,7 +51,7 @@ class PersonalityDB:
                     WHERE user_id = ? AND name = ?
                 ''', (new_description, user_id, name))
                 await db.commit()
-            except aiosqlite.Error as e:
+            except aiosqlite.Error:
                 await db.rollback()
 
     async def delete_personality(self, user_id: int, name: str):
@@ -58,3 +64,21 @@ class PersonalityDB:
                 await db.commit()
             except aiosqlite.Error:
                 await db.rollback()
+
+    async def set_active_personality(self, user_id: int, name: str):
+        async with aiosqlite.connect(self.db_path) as db:
+            try:
+                await db.execute('''
+                    INSERT INTO user_settings (user_id, active_personality)
+                    VALUES (?, ?)
+                    ON CONFLICT(user_id) DO UPDATE SET active_personality = ?
+                ''', (user_id, name, name))
+                await db.commit()
+            except aiosqlite.Error:
+                await db.rollback()
+
+    async def get_active_personality(self, user_id: int):
+        async with aiosqlite.connect(self.db_path) as db:
+            async with db.execute('SELECT active_personality FROM user_settings WHERE user_id = ?', (user_id,)) as cursor:
+                result = await cursor.fetchone()
+                return result[0] if result else None

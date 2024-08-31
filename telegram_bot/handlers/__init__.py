@@ -9,8 +9,6 @@ __all__ = [
     'register_start_handler',
     'register_create_personality_handlers',
     'register_personalities_list',
-    'register_edit_personality',
-    'register_delete_personality'
 ]
 
 
@@ -18,5 +16,3 @@ def register_handlers(app):
     register_start_handler(app)
     register_create_personality_handlers(app)
     register_personalities_list(app)
-    register_edit_personality(app)
-    register_delete_personality(app)

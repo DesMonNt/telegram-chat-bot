@@ -2,6 +2,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
 from .edit_personality import edit_personality
 from .delete_personality import delete_personality, confirm_delete, cancel_delete
+from .set_active_personality import set_active_personality
 from telegram_bot.databases import PersonalityDB
 
 db = PersonalityDB()
@@ -24,7 +25,7 @@ async def list_personalities(update: Update, context: CallbackContext):
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await update.message.reply_text("Выберите личность, чтобы увидеть описание:", reply_markup=reply_markup)
+    await update.message.reply_text("Выберите личность:", reply_markup=reply_markup)
 
 
 async def button_handler(update: Update, context: CallbackContext):
@@ -38,17 +39,21 @@ async def button_handler(update: Update, context: CallbackContext):
     elif name.startswith("delete_"):
         await delete_personality(update, context)
         return
-    elif name.startswith("confirm_delete"):
+    elif name.startswith("confirm_delete_"):
         await confirm_delete(update, context)
         return
-    elif name.startswith("cancel_delete"):
+    elif name.startswith("cancel_delete_"):
         await cancel_delete(update, context)
+        return
+    elif name.startswith("set_active_"):
+        await set_active_personality(update, context)
         return
 
     personalities = await db.get_personalities(user_id)
     description = next((desc for n, desc in personalities if n == name), "Описание не найдено")
 
     keyboard = [
+        [InlineKeyboardButton("Выбрать активной", callback_data=f"set_active_{name}")],
         [InlineKeyboardButton("Изменить", callback_data=f"edit_{name}")],
         [InlineKeyboardButton("Удалить", callback_data=f"delete_{name}")]
     ]
@@ -59,5 +64,5 @@ async def button_handler(update: Update, context: CallbackContext):
 
 
 def register_personalities_list(application):
-    application.add_handler(CommandHandler("personalities_list", list_personalities))
+    application.add_handler(CommandHandler("manage_personas", list_personalities))
     application.add_handler(CallbackQueryHandler(button_handler))

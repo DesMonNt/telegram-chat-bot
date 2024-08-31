@@ -52,7 +52,7 @@ async def cancel_creation(update: Update, context: CallbackContext):
 
 def register_create_personality_handlers(application):
     create_personality_handler = ConversationHandler(
-        entry_points=[CommandHandler("create_personality", start_create_personality)],
+        entry_points=[CommandHandler("create_persona", start_create_personality)],
         states={
             WAITING_FOR_NAME: [
                 MessageHandler(filters.Regex('^Отмена$'), cancel_creation),
