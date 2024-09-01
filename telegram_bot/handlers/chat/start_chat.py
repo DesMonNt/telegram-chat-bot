@@ -23,7 +23,7 @@ async def start_chat(update: Update, context: CallbackContext):
     user = await personality_db.get_description(user_id, user_name)
 
     if user is None:
-        user = ['default user', 'default description']
+        user = [update.effective_user.first_name, '']
 
     user_personality = Personality(name=user[0], description=user[1])
 
