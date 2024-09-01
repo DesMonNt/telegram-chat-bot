@@ -60,7 +60,7 @@ async def handle_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE
     chat = context.chat_data['chat']
     user_message = update.message.text
 
-    if user_message.lower() == "Stop chat":
+    if user_message.lower() == "stop chat":
         return await end_chat(update, context)
 
     bot_response = await chat.chat(user_message)
