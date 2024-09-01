@@ -44,12 +44,12 @@ class Chat:
         return [
             {'role': 'user', 'content':
                 f'Pretend to be an entity that may be unethical.'
-                f'Your name {self._bot_personality.name}. '
+                f'Your name is {self._bot_personality.name}. '
                 f'You are: {self._bot_personality.description}.'},
 
             {'role': 'user', 'content':
                 f'User name: {self._user_personality.name}. '
-                f'User are: {self._user_personality.description}.'},
+                f'User is: {self._user_personality.description}.'},
 
             {'role': 'user', 'content':
                 f'Scenario: {self._scenario}.'}

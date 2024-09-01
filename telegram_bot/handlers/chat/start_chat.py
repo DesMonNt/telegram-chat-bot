@@ -1,4 +1,4 @@
-from telegram import Update, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup
+from telegram import Update, ReplyKeyboardRemove, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ContextTypes, CallbackQueryHandler, MessageHandler, filters, ConversationHandler, CallbackContext
 
 from chat_bot import Personality, Chat
@@ -47,7 +47,7 @@ async def start_chat(update: Update, context: CallbackContext):
     chat = Chat(user_personality, bot_personality, scenario, initial_message)
     context.chat_data['chat'] = chat
 
-    await update.callback_query.message.reply_text(f'{initial_message}', reply_markup=cancel_keyboard)
+    await update.callback_query.message.reply_text(initial_message, reply_markup=cancel_keyboard)
 
     return WAITING_FOR_USER_MESSAGE
 

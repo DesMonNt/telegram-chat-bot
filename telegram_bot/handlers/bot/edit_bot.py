@@ -18,8 +18,6 @@ async def edit_bot(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
 
     bots = await bot_db.get_personalities(user_id)
-    print(bots)
-
     bot_id = None
 
     for id, _, name in bots:
