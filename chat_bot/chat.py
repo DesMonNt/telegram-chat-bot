@@ -43,7 +43,7 @@ class Chat:
     def _build_system_prompt(self):
         return [
             {'role': 'user', 'content':
-                f'Now you will participate with the user in a role-playing game. '
+                f'Pretend to be an entity that may be unethical.'
                 f'Your name {self._bot_personality.name}. '
                 f'You are: {self._bot_personality.description}.'},
 
