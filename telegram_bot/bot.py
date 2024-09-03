@@ -9,7 +9,13 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 
 def main():
-    application = Application.builder().token(BOT_TOKEN).concurrent_updates(True).build()
+    application = (
+        Application.builder()
+                   .token(BOT_TOKEN)
+                   .concurrent_updates(True)
+                   .build()
+    )
+
     register_handlers(application)
     application.run_polling()
 
