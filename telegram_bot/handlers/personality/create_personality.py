@@ -1,5 +1,6 @@
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telegram.ext import CommandHandler, MessageHandler, CallbackContext, ConversationHandler, filters
+from telegram.constants import ParseMode
 from telegram_bot.databases import PersonalityDB
 
 WAITING_FOR_NAME, WAITING_FOR_DESCRIPTION = range(2)
@@ -43,7 +44,8 @@ async def process_description(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
 
     await db.add_personality(user_id, name, description)
-    await update.message.reply_text(f"The personality is created:\n\nName: {name}\nDescription: {description}")
+    await update.message.reply_text(f"The personality is created:\n\n*Name:* {name}\n*Description:* {description}",
+                                    parse_mode=ParseMode.MARKDOWN)
 
     context.user_data.clear()
 

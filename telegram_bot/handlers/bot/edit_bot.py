@@ -6,7 +6,7 @@ WAITING_FOR_EDIT_SCENARIO, WAITING_FOR_EDIT_INITIAL_MESSAGE = range(2)
 
 bot_db = BotDB()
 
-cancel_button = KeyboardButton("Отмена")
+cancel_button = KeyboardButton("Cancel")
 cancel_keyboard = ReplyKeyboardMarkup([[cancel_button]], resize_keyboard=True)
 
 
@@ -20,7 +20,7 @@ async def edit_bot(update: Update, context: CallbackContext):
     bots = await bot_db.get_personalities(user_id)
     bot_id = None
 
-    for id, _, name in bots:
+    for id, name, _ in bots:
         if name == bot_name:
             bot_id = id
             break
@@ -34,12 +34,13 @@ async def edit_bot(update: Update, context: CallbackContext):
 
     if bot_info:
         await query.message.reply_text(
-            f"Enter a new script for the bot '{bot_name}':",
+            f"Enter a new scenario for the bot '{bot_name}':",
             reply_markup=cancel_keyboard
         )
         return WAITING_FOR_EDIT_SCENARIO
     else:
         await query.message.reply_text("Information about the bot was not found.")
+
         return ConversationHandler.END
 
 
@@ -69,7 +70,7 @@ async def process_edit_initial_message(update: Update, context: CallbackContext)
 
     await bot_db.update_bot_initial_message(bot_id, initial_message)
 
-    await update.message.reply_text(f"The initial message for the bot has been updated.")
+    await update.message.reply_text(f"Bot has been updated.")
 
     context.user_data.clear()
 

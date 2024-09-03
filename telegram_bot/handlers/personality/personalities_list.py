@@ -1,4 +1,5 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.constants import ParseMode
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
 from telegram_bot.databases import PersonalityDB
 
@@ -41,7 +42,8 @@ async def button_handler(update: Update, context: CallbackContext):
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await query.message.reply_text(f"Name: {name}\nDescription: {description}", reply_markup=reply_markup)
+    await query.message.reply_text(f"*Name:* {name}\n*Description:* {description}", reply_markup=reply_markup,
+                                   parse_mode=ParseMode.MARKDOWN)
 
 
 def register_personalities_list_handler(application):
