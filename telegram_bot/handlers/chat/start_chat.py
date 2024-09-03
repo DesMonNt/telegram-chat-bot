@@ -13,7 +13,7 @@ bot_db = BotDB()
 WAITING_FOR_USER_MESSAGE = range(1)
 
 
-async def start_chat(update: Update, context: CallbackContext):
+async def start_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await personality_db.init_db()
     await bot_db.init_db()
 
