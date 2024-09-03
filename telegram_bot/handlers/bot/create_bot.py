@@ -65,7 +65,7 @@ async def process_initial_message(update: Update, context: CallbackContext):
 
     await db.add_bot_info(personality_id, scenario, initial_message)
 
-    await update.message.reply_text(f"Bot created:\n*Name:* {bot_name}\n*Description:* {description}\n*Scenario:* "
+    await update.message.reply_text(f"Bot created:\n\n*Name:* {bot_name}\n*Description:* {description}\n*Scenario:* "
                                     f"{scenario}\n*First message:* {initial_message}", parse_mode=ParseMode.MARKDOWN)
 
     context.user_data.clear()
