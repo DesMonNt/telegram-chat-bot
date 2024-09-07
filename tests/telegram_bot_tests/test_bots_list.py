@@ -3,6 +3,7 @@ import os.path
 import pytest
 from unittest.mock import AsyncMock
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.constants import ParseMode
 from telegram.ext import CallbackContext
 from telegram_bot.handlers.bot import list_bots, button_handler
 
@@ -45,4 +46,5 @@ async def test_button_handler(mocker):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    mock_query.message.reply_text.assert_called_once_with("Name: Bot1", reply_markup=reply_markup)
+    mock_query.message.reply_text.assert_called_once_with("*Name:* Bot1", reply_markup=reply_markup,
+                                                          parse_mode=ParseMode.MARKDOWN)

@@ -1,5 +1,6 @@
 import pytest
 from telegram import Update, Message, User
+from telegram.constants import ParseMode
 from telegram.ext import ContextTypes, ConversationHandler
 from telegram_bot.handlers.personality.create_personality import (
     start_create_personality, process_name, process_description, cancel_creation
@@ -102,7 +103,8 @@ async def test_process_description(mocker):
     assert result == ConversationHandler.END
     mock_db.add_personality.assert_called_once_with(1234, "NewPersona", "This is a new personality.")
     message.reply_text.assert_called_once_with(
-        "The personality is created:\n\nName: NewPersona\nDescription: This is a new personality."
+        "The personality is created:\n\n*Name:* NewPersona\n*Description:* This is a new personality.",
+        parse_mode=ParseMode.MARKDOWN
     )
     assert context.user_data == {}
 

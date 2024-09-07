@@ -73,7 +73,7 @@ async def test_process_edit_initial_message(mocker):
 
     assert state == ConversationHandler.END
     mock_db.update_bot_initial_message.assert_called_once_with(1, "Initial message")
-    message.reply_text.assert_called_once_with("The initial message for the bot has been updated.")
+    message.reply_text.assert_called_once_with("Bot has been updated.")
     assert context.user_data == {}
 
 

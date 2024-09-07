@@ -41,4 +41,4 @@ async def test_get_active_personality_none(mocker):
 
     await get_active_personality(update, context)
 
-    message.reply_text.assert_called_once_with("No active identity has been established.")
+    message.reply_text.assert_called_once_with("No active personality has been established.")

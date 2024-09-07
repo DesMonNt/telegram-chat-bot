@@ -40,4 +40,4 @@ async def test_button_handler(mocker):
     await button_handler(update, context)
 
     query.message.reply_text.assert_called_once()
-    assert "Name: Persona1" in query.message.reply_text.call_args[0][0]
+    assert "*Name:* Persona1\n*Description:* Description1" in query.message.reply_text.call_args[0][0]
