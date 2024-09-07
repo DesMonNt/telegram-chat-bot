@@ -20,10 +20,9 @@ class BotDB:
             await db.execute('''
                 CREATE TABLE IF NOT EXISTS bot_info (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    personality_id INTEGER NOT NULL,
                     scenario TEXT,
                     initial_message TEXT,
-                    FOREIGN KEY (personality_id) REFERENCES personalities (id)
+                    FOREIGN KEY (id) REFERENCES personalities (id)
                 )
             ''')
             await db.commit()
@@ -71,57 +70,57 @@ class BotDB:
             except aiosqlite.Error:
                 await db.rollback()
 
-    async def add_bot_info(self, personality_id: int, scenario: str, initial_message: str):
+    async def add_bot_info(self, bot_id: int, scenario: str, initial_message: str):
         async with aiosqlite.connect(self.db_path) as db:
             try:
                 await db.execute('''
-                    INSERT INTO bot_info (personality_id, scenario, initial_message)
+                    INSERT INTO bot_info (id, scenario, initial_message)
                     VALUES (?, ?, ?)
-                ''', (personality_id, scenario, initial_message))
+                ''', (bot_id, scenario, initial_message))
                 await db.commit()
             except aiosqlite.Error:
                 await db.rollback()
 
-    async def get_bot_info(self, personality_id: int):
+    async def get_bot_info(self, bot_id: int):
         async with aiosqlite.connect(self.db_path) as db:
             async with db.execute('''
                 SELECT scenario, initial_message
                 FROM bot_info
-                WHERE personality_id = ?
-            ''', (personality_id,)) as cursor:
+                WHERE id = ?
+            ''', (bot_id,)) as cursor:
                 return await cursor.fetchone()
 
-    async def update_bot_scenario(self, personality_id: int, scenario: str):
+    async def update_bot_scenario(self, bot_id: int, scenario: str):
         async with aiosqlite.connect(self.db_path) as db:
             try:
                 await db.execute('''
                     UPDATE bot_info
                     SET scenario = ?
-                    WHERE personality_id = ?
-                ''', (scenario, personality_id))
+                    WHERE id = ?
+                ''', (scenario, bot_id))
                 await db.commit()
             except aiosqlite.Error:
                 await db.rollback()
 
-    async def update_bot_initial_message(self, personality_id: int, initial_message: str):
+    async def update_bot_initial_message(self, bot_id: int, initial_message: str):
         async with aiosqlite.connect(self.db_path) as db:
             try:
                 await db.execute('''
                     UPDATE bot_info
                     SET initial_message = ?
-                    WHERE personality_id = ?
-                ''', (initial_message, personality_id))
+                    WHERE id = ?
+                ''', (initial_message, bot_id))
                 await db.commit()
             except aiosqlite.Error:
                 await db.rollback()
 
-    async def delete_bot_info(self, personality_id: int):
+    async def delete_bot_info(self, bot_id: int):
         async with aiosqlite.connect(self.db_path) as db:
             try:
                 await db.execute('''
                     DELETE FROM bot_info
-                    WHERE personality_id = ?
-                ''', (personality_id,))
+                    WHERE id = ?
+                ''', (bot_id,))
                 await db.commit()
             except aiosqlite.Error:
                 await db.rollback()
@@ -136,22 +135,22 @@ class BotDB:
                 result = await cursor.fetchone()
                 return result[0]
 
-    async def get_bot_scenario(self, personality_id: int):
+    async def get_bot_scenario(self, bot_id: int):
         async with aiosqlite.connect(self.db_path) as db:
             async with db.execute('''
                 SELECT scenario
                 FROM bot_info
-                WHERE personality_id = ?
-            ''', (personality_id,)) as cursor:
+                WHERE id = ?
+            ''', (bot_id,)) as cursor:
                 result = await cursor.fetchone()
                 return result[0]
 
-    async def get_bot_initial_message(self, personality_id: int):
+    async def get_bot_initial_message(self, bot_id: int):
         async with aiosqlite.connect(self.db_path) as db:
             async with db.execute('''
                 SELECT initial_message
                 FROM bot_info
-                WHERE personality_id = ?
-            ''', (personality_id,)) as cursor:
+                WHERE id = ?
+            ''', (bot_id,)) as cursor:
                 result = await cursor.fetchone()
                 return result[0]

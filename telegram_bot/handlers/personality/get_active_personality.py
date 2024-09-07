@@ -14,7 +14,7 @@ async def get_active_personality(update: Update, context: CallbackContext):
     if active_personality:
         await update.message.reply_text(f"Your active personality: {active_personality}")
     else:
-        await update.message.reply_text("No active identity has been established.")
+        await update.message.reply_text("No active personality has been established.")
 
 
 def register_get_active_personality_handler(application):

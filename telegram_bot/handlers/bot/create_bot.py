@@ -1,4 +1,5 @@
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
+from telegram.constants import ParseMode
 from telegram.ext import CommandHandler, MessageHandler, CallbackContext, ConversationHandler, filters
 from telegram_bot.databases import BotDB
 
@@ -64,7 +65,8 @@ async def process_initial_message(update: Update, context: CallbackContext):
 
     await db.add_bot_info(personality_id, scenario, initial_message)
 
-    await update.message.reply_text(f"Bot created:\nName: {bot_name}\nDescription: {description}\nScenario: {scenario}\nFirst message: {initial_message}")
+    await update.message.reply_text(f"Bot created:\n\n*Name:* {bot_name}\n*Description:* {description}\n*Scenario:* "
+                                    f"{scenario}\n*First message:* {initial_message}", parse_mode=ParseMode.MARKDOWN)
 
     context.user_data.clear()
 
