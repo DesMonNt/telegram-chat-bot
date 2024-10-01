@@ -1,6 +1,6 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
-from telegram_bot.databases import BotDB
+from databases import BotDB
 
 db = BotDB()
 

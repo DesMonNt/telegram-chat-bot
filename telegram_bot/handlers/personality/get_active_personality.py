@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext
-from telegram_bot.databases import PersonalityDB
+from databases import PersonalityDB
 
 db = PersonalityDB()
 

@@ -1,5 +1,5 @@
 import pytest
-from telegram_bot.databases import BotDB
+from databases import BotDB
 
 
 @pytest.mark.asyncio

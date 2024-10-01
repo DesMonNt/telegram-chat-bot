@@ -2,7 +2,7 @@ from telegram import Update, ReplyKeyboardRemove, KeyboardButton, ReplyKeyboardM
 from telegram.ext import ContextTypes, CallbackQueryHandler, MessageHandler, filters, ConversationHandler, CallbackContext
 
 from chat_bot import Personality, Chat
-from telegram_bot.databases import PersonalityDB, BotDB
+from databases import PersonalityDB, BotDB
 
 cancel_button = KeyboardButton("Stop chat")
 cancel_keyboard = ReplyKeyboardMarkup([[cancel_button]], resize_keyboard=True)

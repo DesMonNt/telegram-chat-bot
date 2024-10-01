@@ -1,7 +1,7 @@
 from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
 
-from telegram_bot.databases import PersonalityDB
+from databases import PersonalityDB
 
 db = PersonalityDB()
 

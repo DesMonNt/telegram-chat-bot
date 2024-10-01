@@ -1,5 +1,5 @@
 import pytest
-from telegram_bot.databases import PersonalityDB
+from databases import PersonalityDB
 
 
 @pytest.mark.asyncio

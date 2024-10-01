@@ -1,6 +1,6 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext, CallbackQueryHandler
-from telegram_bot.databases import PersonalityDB
+from databases import PersonalityDB
 
 db = PersonalityDB()
 

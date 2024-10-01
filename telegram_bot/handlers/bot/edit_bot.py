@@ -1,6 +1,6 @@
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
-from telegram_bot.databases import BotDB
+from databases import BotDB
 
 WAITING_FOR_EDIT_SCENARIO, WAITING_FOR_EDIT_INITIAL_MESSAGE = range(2)
 

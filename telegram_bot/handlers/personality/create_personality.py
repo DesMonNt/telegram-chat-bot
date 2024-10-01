@@ -1,7 +1,7 @@
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telegram.ext import CommandHandler, MessageHandler, CallbackContext, ConversationHandler, filters
 from telegram.constants import ParseMode
-from telegram_bot.databases import PersonalityDB
+from databases import PersonalityDB
 
 WAITING_FOR_NAME, WAITING_FOR_DESCRIPTION = range(2)
 
